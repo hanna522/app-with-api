@@ -1,0 +1,8 @@
+.container {
+    margin-top: 1.2rem;
+  }
+  
+  .container input,
+  .container ::-webkit-input-placeholder {
+    color: white !important;
+  }
