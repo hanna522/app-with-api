@@ -43,18 +43,18 @@ class App extends React.Component {
         return "sleeveless, shorts";
       case tem >= 23 && tem < 28:
         return "half-sleeve, cotton pants";
-      case tem >=20 && tem < 23:
+      case tem >= 20 && tem < 23:
         return "long-sleeve, cotton pants";
-      case tem >=17 && tem < 19:
+      case tem >= 17 && tem < 19:
         return "thin cardigan, hoodie, jeans";
       case tem >= 12 && tem < 17:
         return "jacket, cardigan, jeans";
       case tem >= 9 && tem < 12:
         return "trench coat, jumper, jeans";
-      case tem >=5 && tem < 9:
+      case tem >= 5 && tem < 9:
         return "wool coat, thick pants";
       case tem < 5:
-        return "padded jacket, thick pants, muffler, gloves"
+        return "padded jacket, thick pants, muffler, gloves";
       default:
         return "warm clothes";
     }
@@ -110,7 +110,6 @@ class App extends React.Component {
         this.setState({
           error: true,
         });
-
       } else {
         const tempCelsius = this.calCelsius(response.main.temp);
         this.setState({

@@ -1,30 +1,34 @@
-import React from 'react';
-import "./form.style.css"
+import React from "react";
+import "./form.style.css";
 
-const Form = props => {
+const Form = (props) => {
   return (
     <div className="container text-light">
       <div>{props.error ? error() : ""}</div>
       <form onSubmit={props.loadWeather}>
         <div className="row">
-          <div className="col-md-3 offset-md-2"> {/** col: 3/12, front empty row: 2 */}
-              <input 
-              type="text" 
-              className="form-control" 
-              name="city" 
+          <div className="col-md-3 offset-md-2">
+            {" "}
+            {/** col: 3/12, front empty row: 2 */}
+            <input
+              type="text"
+              className="form-control"
+              name="city"
               autoComplete="off"
-              placeholder="City" />
+              placeholder="City"
+            />
           </div>
           <div className="col-md-3">
-              <input 
-              type="text" 
-              className="form-control" 
-              name="country" 
+            <input
+              type="text"
+              className="form-control"
+              name="country"
               autoComplete="off"
-              placeholder="Country" />
+              placeholder="Country"
+            />
           </div>
           <div className="col-md-3 mt-md-0 text-md-left">
-              <button className="btn btn-warning">Get Weather</button>
+            <button className="btn btn-warning">Get Weather</button>
           </div>
         </div>
       </form>
@@ -33,7 +37,7 @@ const Form = props => {
 };
 
 function error() {
-  return(
+  return (
     <div className="alert alert-danger mx-5" role="alert">
       Valid City and Country is Required
     </div>
