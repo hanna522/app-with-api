@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "weather-icons/css/weather-icons.css";
@@ -10,92 +10,60 @@ const API_key = "429736441cf3572838aa10530929f7cd";
 
 //api call https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
 
-class App extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      city: undefined,
-      country: undefined,
-      icon: undefined,
-      clothing: undefined,
-      main: undefined,
-      celsius: undefined,
-      temp_max: undefined,
-      temp_min: undefined,
-      description: "",
-      error: false,
-    };
+function App() {
+  const [weatherState, setWeatherState] = useState({
+    city: undefined,
+    country: undefined,
+    icon: undefined,
+    clothing: undefined,
+    main: undefined,
+    celsius: undefined,
+    temp_max: undefined,
+    temp_min: undefined,
+    description: "",
+    error: false,
+  });
 
-    this.weatherIcon = {
-      Thunderstorm: "wi-thunderstorm",
-      Drizzle: "wi-sleet",
-      Rain: "wi-storm-showers",
-      Snow: "wi-snow",
-      Atmosphere: "wi-fog",
-      Clear: "wi-day-sunny",
-      Clouds: "wi-day-fog",
-    };
+  const weatherIcon = {
+    Thunderstorm: "wi-thunderstorm",
+    Drizzle: "wi-sleet",
+    Rain: "wi-storm-showers",
+    Snow: "wi-snow",
+    Atmosphere: "wi-fog",
+    Clear: "wi-day-sunny",
+    Clouds: "wi-day-fog"
+  };
+
+  const get_ClothingInfo = (tem) => {
+    if (tem >= 28) return "sleeveless, shorts";
+    else if (tem >= 23) return "half-sleeve, cotton pants";
+    else if (tem >= 20) return "long-sleeve, cotton pants";
+    else if (tem >= 17) return "thin cardigan, hoodie, jeans";
+    else if (tem >= 12) return "jacket, cardigan, jeans";
+    else if (tem >= 9) return "trench coat, jumper, jeans";
+    else if (tem >= 5) return "wool coat, thick pants";
+    else if (tem < 5) return "padded jacket, thick pants, muffler, gloves";
+    else return "warm clothes";
+  };
+
+  const get_WeatherIcon = (icons, rangeId) => {
+    let icon;
+
+    if (rangeId >= 200 && rangeId < 232) icon = icons.Thunderstorm;
+    else if (rangeId >= 300 && rangeId <= 321) icon = icons.Drizzle;
+    else if (rangeId >= 500 && rangeId <= 521) icon = icons.Rain;
+    else if (rangeId >= 600 && rangeId <= 622) icon = icons.Snow;
+    else if (rangeId >= 701 && rangeId <= 781) icon = icons.Atmosphere;
+    else if (rangeId === 800) icon = icons.Clear;
+    else icon = icons.Clouds;
+    
+    return icon;
   }
 
-  get_ClothingInfo(tem) {
-    switch (true) {
-      case tem >= 28:
-        return "sleeveless, shorts";
-      case tem >= 23 && tem < 28:
-        return "half-sleeve, cotton pants";
-      case tem >= 20 && tem < 23:
-        return "long-sleeve, cotton pants";
-      case tem >= 17 && tem < 19:
-        return "thin cardigan, hoodie, jeans";
-      case tem >= 12 && tem < 17:
-        return "jacket, cardigan, jeans";
-      case tem >= 9 && tem < 12:
-        return "trench coat, jumper, jeans";
-      case tem >= 5 && tem < 9:
-        return "wool coat, thick pants";
-      case tem < 5:
-        return "padded jacket, thick pants, muffler, gloves";
-      default:
-        return "warm clothes";
-    }
-  }
+  const calCelsius = (temp) => Math.floor(temp - 273.15);
 
-  get_WeatherIcon(icons, rangeId) {
-    switch (true) {
-      case rangeId >= 200 && rangeId < 232:
-        this.setState({ icon: icons.Thunderstorm });
-        break;
-      case rangeId >= 300 && rangeId <= 321:
-        this.setState({ icon: icons.Drizzle });
-        break;
-      case rangeId >= 500 && rangeId <= 521:
-        this.setState({ icon: icons.Rain });
-        break;
-      case rangeId >= 600 && rangeId <= 622:
-        this.setState({ icon: icons.Snow });
-        break;
-      case rangeId >= 701 && rangeId <= 781:
-        this.setState({ icon: icons.Atmosphere });
-        break;
-      case rangeId === 800:
-        this.setState({ icon: icons.Clear });
-        break;
-      case rangeId >= 801 && rangeId <= 804:
-        this.setState({ icon: icons.Clouds });
-        break;
-      default:
-        this.setState({ icon: icons.Clouds });
-    }
-  }
-
-  calCelsius(temp) {
-    let cell = Math.floor(temp - 273.15);
-    return cell;
-  }
-
-  getWeather = async (e) => {
+  const getWeather = async (e) => {
     e.preventDefault();
-
     const country = e.target.elements.country.value;
     const city = e.target.elements.city.value;
 
@@ -107,12 +75,10 @@ class App extends React.Component {
       const response = await api_call.json();
 
       if (response.cod !== 200) {
-        this.setState({
-          error: true,
-        });
+        setWeatherState(prev => ({ ...prev, error: true }));
       } else {
-        const tempCelsius = this.calCelsius(response.main.temp);
-        this.setState({
+        const tempCelsius = calCelsius(response.main.temp);
+        setWeatherState({
           city: `${response.name}, ${response.sys.country}`,
           country: response.sys.country,
           clothing: this.get_ClothingInfo(tempCelsius),
@@ -122,34 +88,29 @@ class App extends React.Component {
           temp_min: this.calCelsius(response.main.temp_min),
           description: response.weather[0].description,
           error: false,
+          icon: get_WeatherIcon(this.weatherIcon, response.weather[0].id)
         });
-
-        this.get_WeatherIcon(this.weatherIcon, response.weather[0].id);
       }
       console.log(response);
     } else {
-      this.setState({
-        error: true,
-      });
+        setWeatherState(prev => ({ ...prev, error: true }));
     }
   };
 
-  render() {
-    return (
-      <div className="App">
-        <Form loadWeather={this.getWeather} error={this.state.error} />
-        <Weather
-          cityName={this.state.city}
-          weatherIcon={this.state.icon}
-          clothing={this.state.clothing}
-          temp_celsius={this.state.celsius}
-          temp_max={this.state.temp_max}
-          temp_min={this.state.temp_min}
-          description={this.state.description}
-        />
-      </div>
-    );
-  }
+  return (
+    <div className="App">
+      <Form loadWeather={getWeather} error={weatherState.error} />
+      <Weather
+        cityName={weatherState.city}
+        weatherIcon={weatherState.icon}
+        clothing={weatherState.clothing}
+        temp_celsius={weatherState.celsius}
+        temp_max={weatherState.temp_max}
+        temp_min={weatherState.temp_min}
+        description={weatherState.description}
+      />
+    </div>
+  );
 }
 
 export default App;
