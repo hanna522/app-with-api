@@ -81,14 +81,14 @@ function App() {
         setWeatherState({
           city: `${response.name}, ${response.sys.country}`,
           country: response.sys.country,
-          clothing: this.get_ClothingInfo(tempCelsius),
+          clothing: get_ClothingInfo(tempCelsius),
           main: response.weather[0].main,
           celsius: tempCelsius,
-          temp_max: this.calCelsius(response.main.temp_max),
-          temp_min: this.calCelsius(response.main.temp_min),
+          temp_max: calCelsius(response.main.temp_max),
+          temp_min: calCelsius(response.main.temp_min),
           description: response.weather[0].description,
           error: false,
-          icon: get_WeatherIcon(this.weatherIcon, response.weather[0].id)
+          icon: get_WeatherIcon(weatherIcon, response.weather[0].id),
         });
       }
       console.log(response);
