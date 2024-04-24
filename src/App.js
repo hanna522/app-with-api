@@ -98,7 +98,7 @@ function App() {
   };
 
   return (
-    <div className="App">
+    <main className="App">
       <Form loadWeather={getWeather} error={weatherState.error} />
       <Weather
         cityName={weatherState.city}
@@ -109,7 +109,7 @@ function App() {
         temp_min={weatherState.temp_min}
         description={weatherState.description}
       />
-    </div>
+    </main>
   );
 }
 

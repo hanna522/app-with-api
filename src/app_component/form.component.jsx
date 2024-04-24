@@ -3,8 +3,8 @@ import "./form.style.css";
 
 const Form = (props) => {
   return (
-    <div className="container text-light">
-      <div>{props.error ? error() : ""}</div>
+    <section className="container text-light">
+      {props.error ? error() : ""}
       <form onSubmit={props.loadWeather}>
         <div className="row">
           <div className="col-md-3 offset-md-2">
@@ -32,15 +32,15 @@ const Form = (props) => {
           </div>
         </div>
       </form>
-    </div>
+    </section>
   );
 };
 
 function error() {
   return (
-    <div className="alert alert-danger mx-5" role="alert">
+    <aside className="alert alert-danger mx-5" role="alert">
       Valid City and Country is Required
-    </div>
+    </aside>
   );
 }
 
