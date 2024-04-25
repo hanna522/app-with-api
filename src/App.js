@@ -73,6 +73,7 @@ function App() {
       );
 
       const response = await api_call.json();
+            console.log(response);
 
       if (response.cod !== 200) {
         setWeatherState(prev => ({ ...prev, error: true }));
@@ -91,7 +92,7 @@ function App() {
           icon: get_WeatherIcon(weatherIcon, response.weather[0].id),
         });
       }
-      console.log(response);
+
     } else {
         setWeatherState(prev => ({ ...prev, error: true }));
     }

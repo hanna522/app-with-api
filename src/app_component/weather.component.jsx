@@ -5,38 +5,49 @@ const Weather = (props) => {
   return (
     <article className="container text-light">
       <div className="cards pt-4">
-        {/** padding-top : 1rem */}
         <header>
           <h1>{props.cityName}</h1>
         </header>
+
         <div className="row">
-          <div className="col-md-3 offset-md-3 py-4">
-            {/** padding-y-axis : 1rem */}
-            <i className={`wi ${props.weatherIcon} display-1`} />
+          <div className="temperature col-md-3 offset-md-3 py-4">
+            <i
+              className={`wi ${props.weatherIcon} display-1`}
+              role="img"
+              aria-label="Weather Icon"
+            />
+
             {props.temp_celsius ? (
-              <h2 className="py-2">{props.temp_celsius}&deg;</h2>
+              <div className="temperature current-temperature">
+                <p>{props.temp_celsius}&deg;</p>
+              </div>
             ) : null}
-            <h3 lassName="py-3">{minmaxTemp(props.temp_min, props.temp_max)}</h3>
-            <h3 className="py-3">{props.description}</h3>
+
+            <div className="temperature description">
+              <p>{props.description}</p>
+            </div>
+
+            <div className="row">
+              <div className="temperature min-temperature col-md-6">
+                <h2>min</h2>
+                <p>{props.temp_min}&deg;</p>
+              </div>
+
+              <div className="temperature max-temperature col-md-6">
+                <h2>max</h2>
+                <p>{props.temp_min}&deg;</p>
+              </div>
+            </div>
           </div>
-          <div className="col-md-3 py-4">
-            <h3 className="py-3"> {props.clothing}</h3>
+
+          <div className="clothing col-md-3 py-4">
+            <h2>Clothing</h2>
+            <p>{props.clothing}</p>
           </div>
         </div>
       </div>
     </article>
   );
 };
-
-function minmaxTemp(min, max) {
-  if (min && max) {
-    return (
-      <h3>
-        <span className="px-4">{min}&deg;</span>
-        <span className="px-4">{max}&deg;</span>
-      </h3>
-    );
-  }
-}
 
 export default Weather;
