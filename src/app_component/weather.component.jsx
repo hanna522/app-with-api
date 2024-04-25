@@ -28,22 +28,28 @@ const Weather = (props) => {
             </div>
 
             <div className="row">
-              <div className="temperature min-temperature col-md-6">
-                <h2>min</h2>
-                <p>{props.temp_min}&deg;</p>
-              </div>
+              {props.temp_min ? (
+                <div className="temperature min-temperature col-md-6">
+                  <h2>min</h2>
+                  <p>{props.temp_min}&deg;</p>
+                </div>
+              ) : null}
 
-              <div className="temperature max-temperature col-md-6">
-                <h2>max</h2>
-                <p>{props.temp_min}&deg;</p>
-              </div>
+              {props.temp_max ? (
+                <div className="temperature max-temperature col-md-6">
+                  <h2>max</h2>
+                  <p>{props.temp_min}&deg;</p>
+                </div>
+              ) : null}
             </div>
           </div>
 
-          <div className="clothing col-md-3 py-4">
-            <h2>Clothing</h2>
-            <p>{props.clothing}</p>
-          </div>
+          {props.clothing ? (
+            <div className="clothing col-md-3 py-4">
+              <h2>Clothing</h2>
+              <p>{props.clothing}</p>
+            </div>
+          ) : null}
         </div>
       </div>
     </article>
